@@ -1,0 +1,1 @@
+SUBDIRS = mine System

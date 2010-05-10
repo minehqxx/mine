@@ -1,0 +1,12 @@
+diff -ur Libc-583/include/fts.h Libc/include/fts.h
+--- Libc-583/include/fts.h	2008-05-23 04:48:00.000000000 +0200
++++ Libc/include/fts.h	2010-04-25 17:38:33.481995943 +0200
+@@ -58,7 +58,7 @@
+ #ifndef	_FTS_H_
+ #define	_FTS_H_
+ 
+-#include <sys/_types.h>
++#include <apsl/bsd/sys/_types.h>
+ 
+ #ifndef _DEV_T
+ typedef	__darwin_dev_t		dev_t;		/* device number */

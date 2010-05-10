@@ -1,0 +1,9 @@
+lib_LTLIBRARIES = libmine.la
+libmine_la_SOURCES = macho.cc minedl_macho.cc minedl_elf.cc minedl.cc dl.cc misc.cc log.cc config.cc
+libmine_la_CPPFLAGS = -I@top_srcdir@/include 
+libmine_la_CPPFLAGS += -I@top_srcdir@/include/apsl/xnu/EXTERNAL_HEADERS 
+libmine_la_CPPFLAGS += -I@top_srcdir@/include/apsl/xnu/osfmk 
+libmine_la_CPPFLAGS += -I@top_srcdir@/include/apsl/xnu/osfmk/mach 
+libmine_la_CPPFLAGS += -I@top_srcdir@/include/apsl/xnu/osfmk/mach-o
+libmine_la_CPPFLAGS += -I@top_srcdir@/include/apsl
+libmine_la_LDFLAGS = -ldl
