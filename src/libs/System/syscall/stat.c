@@ -82,8 +82,20 @@ out_err:
 }
 
 MINEAPI int mine_fstat(int fd, struct darwin_stat *out_s_stat) {
-	return -1;
+	debug__("fstat: %d %p", fd, out_s_stat);
+	struct stat s_tmp;
+	int ec;
+	ec = fstat(fd, &s_tmp);
+	if(ec != 0) {
+		goto out_err;
+	}
+	mine_stat_l2d(out_s_stat, &s_tmp);
+out_err:
+	return ec;
 }
+
+MINEAPI int _fstat$INODE64(int fd, struct darwin_stat *buf) __attribute__ ((weak, alias ("mine_fstat")));
+MINEAPI int _fstat(int fd, struct darwin_stat *buf) __attribute__ ((weak, alias ("mine_fstat")));
 
 MINEAPI int mine_lstat(const char *path, struct darwin_stat *out_s_stat) {
 	struct stat s_tmp;

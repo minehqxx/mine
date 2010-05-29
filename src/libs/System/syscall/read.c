@@ -30,20 +30,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-MINEAPI int  mine_open
-(const char *pathname, int flags, ...) __MINE_UNIX2003(open);
-
 /***********************************************************************
  * Functions
  ***********************************************************************/
-MINEAPI int  mine_open
-(const char *pathname, int flags, ...) {
-	mode_t s_mode;
-	va_list ap;
-	int ec;
-	va_start(ap, flags);
-	s_mode = va_arg(ap, mode_t);
-	va_end(ap);
-	debug__("(%s,%x,%x)", pathname, flags, s_mode);
-	return open(pathname, flags, s_mode);
+MINEAPI int  mine_read(int fd, void * buf, size_t nbyte) {
+	debug__("(%d,%08x,%d)", fd, buf, nbyte);
+	return read(fd, buf, nbyte);
 }

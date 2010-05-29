@@ -52,9 +52,9 @@ void minedl_macho_t::_trace_native(intptr_t _ths, intptr_t _idx, intptr_t edi, i
 	int32_t i_tmp = ths->_s_jump_table->reserved1 + idx;
 	struct nlist * s_sym = nl + ps_indirectsym[i_tmp];
 	string str_symbol = str + s_sym->n_un.n_strx;
-	debug__("Trace call native [%s] of [%s]", str_symbol.c_str(), ths->_name.c_str());
-	debug__("Trace call native register eax:%08x ecx:%08x edx:%08x ebx:%08x", eax, ecx, edx, ebx);
-	debug__("Trace call native register esp:%08x ebp:%08x esi:%08x edi:%08x", esp, ebp, esi, edi);
+	debug__("Trace call [%s] of [%s]", str_symbol.c_str(), ths->_name.c_str());
+	debug__("Trace call register eax:%08x ecx:%08x edx:%08x ebx:%08x", eax, ecx, edx, ebx);
+	debug__("Trace call register esp:%08x ebp:%08x esi:%08x edi:%08x", esp, ebp, esi, edi);
 }
 
 int32_t minedl_macho_t::_create_trace(intptr_t ths, intptr_t idx,
@@ -359,6 +359,7 @@ void minedl_macho_t::_lazy_bind(intptr_t _ths, intptr_t _idx) {
 			}
 		}
 
+		debug__("Lazy bind of %s@%08x", str_symbol.c_str(), i_addr);
 		i_addr = ths->_create_trace(_ths, _idx, _trace_native, i_addr);
 		/* Re-Write x86 JMP */
 		x86::jump(pc_tmp[i], i_addr - ((int32_t) &pc_tmp[i + 1]));

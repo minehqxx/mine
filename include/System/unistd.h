@@ -58,6 +58,10 @@ mine_compat_mode(const char *function, const char *mode)  __MINE_SYM(compat_mode
 
 ssize_t  mine_readlink(const char * path, char * buf, size_t bufsiz) __MINE_SYM(readlink);
 
+MINEAPI int mine_write(int, void *, size_t) __MINE_UNIX2003(write);
+MINEAPI int mine_read(int, void *, size_t) __MINE_UNIX2003(read);
+MINEAPI int  mine_open
+(const char *pathname, int flags, ...) __MINE_UNIX2003(open);
 MINEAPI int  mine_close(int) __MINE_UNIX2003(close);
 
 MINEAPI gid_t  mine_getgid(void) __MINE_SYM(getgid);

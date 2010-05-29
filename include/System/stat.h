@@ -52,7 +52,10 @@ struct darwin_stat {
 };
 
 MINEAPI int mine_stat(const char *path, struct darwin_stat *buf) __MINE_INODE64(stat);
-MINEAPI int mine_fstat(int fd, struct darwin_stat *buf) __MINE_INODE64(fstat);
+MINEAPI int mine_fstat(int fd, struct darwin_stat *buf);
+MINEAPI int _fstat$INODE64(int fd, struct darwin_stat *buf);
+MINEAPI int _fstat(int fd, struct darwin_stat *buf);
+
 MINEAPI int mine_lstat(const char *path, struct darwin_stat *buf)__MINE_INODE64(lstat);
 
 

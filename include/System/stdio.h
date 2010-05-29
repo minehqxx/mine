@@ -62,7 +62,8 @@ mine_vsnprintf(char *restrict s, size_t n, const char *restrict format,
 MINEAPI int
 		mine_vsprintf(char *restrict s, const char *restrict format, va_list ap) __MINE_SYM(vsprintf);
 
-
+MINEAPI FILE * mine_fopen(char const *, char const *) __MINE_SYM(fopen);
+MINEAPI int mine_fclose(FILE *) __MINE_SYM(fclose);
 MINEAPI size_t mine_fwrite(const void *restrict ptr, size_t size, size_t nitems,
 		FILE *restrict stream) __MINE_UNIX2003(fwrite);
 MINEAPI size_t mine_fread(void *restrict ptr, size_t size, size_t nitems,
@@ -72,4 +73,7 @@ MINEAPI
 int mine_fputs(const char *s, FILE *stream) __MINE_UNIX2003(fputs);
 MINEAPI
 int mine_putchar(int c)  __MINE_SYM(putchar);
+
+MINEAPI int mine_fileno(FILE *stream) __MINE_SYM(fileno);
+
 #endif /* SYSTEM_STDIO_H_ */

@@ -140,6 +140,7 @@ int macho_reader_t::load(char const * in_pc_filename, bool in_b_verbose) {
 				break;
 			case CPU_TYPE_X86:
 				debug__("CPU_TYPE_X86");
+				i = s_fat_header.nfat_arch;
 				ec = this->_mach_header((mach_header *) (_pc_image
 						+ s_fat_arch.offset));
 				if (ec != EC_SUCCESS) {

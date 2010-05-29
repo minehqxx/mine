@@ -134,8 +134,12 @@ intptr_t minedl_t::dlsym(string const & name) const {
 	case BUILTIN_FIRST:
 		if (_builtin_lib) {
 			sym_addr = _builtin_lib->dlsym(name);
-			if (sym_addr)
+			if (sym_addr) {
+				debug__("Using built in %s@%08x", name.c_str(), sym_addr);
 				return sym_addr;
+			} else {
+				debug__("Nofound builtin %s", name.c_str(), sym_addr);
+			}
 		}
 		if (_native_lib) {
 			sym_addr = _native_lib->dlsym(name);

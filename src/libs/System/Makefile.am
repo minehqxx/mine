@@ -20,6 +20,9 @@ libSystem_B_dylib_la_SOURCES += stdio/fread.c
 libSystem_B_dylib_la_SOURCES += stdio/fwrite.c
 libSystem_B_dylib_la_SOURCES += stdio/fputs.c
 libSystem_B_dylib_la_SOURCES += stdio/putchar.c
+libSystem_B_dylib_la_SOURCES += stdio/fileno.c
+libSystem_B_dylib_la_SOURCES += stdio/fopen.c
+libSystem_B_dylib_la_SOURCES += stdio/fclose.c
 
 libSystem_B_dylib_la_SOURCES += stdlib/exit.c
 libSystem_B_dylib_la_SOURCES += stdlib/getenv.c
@@ -65,6 +68,8 @@ libSystem_B_dylib_la_SOURCES += posix1e/acl_file.c
 
 libSystem_B_dylib_la_SOURCES += syscall/stat.c
 libSystem_B_dylib_la_SOURCES += syscall/readlink.c
+libSystem_B_dylib_la_SOURCES += syscall/read.c
+libSystem_B_dylib_la_SOURCES += syscall/write.c
 libSystem_B_dylib_la_SOURCES += syscall/open.c
 libSystem_B_dylib_la_SOURCES += syscall/close.c
 libSystem_B_dylib_la_SOURCES += syscall/getgid.c 

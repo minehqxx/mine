@@ -23,27 +23,13 @@
  * Includes
  ***********************************************************************/
 #include <mine/common.h>
-#include <System/unistd.h>
+#include <System/stdio.h>
 
-/* Glibc Linux headers */
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-
-MINEAPI int  mine_open
-(const char *pathname, int flags, ...) __MINE_UNIX2003(open);
-
+#include <stdio.h>
 /***********************************************************************
  * Functions
  ***********************************************************************/
-MINEAPI int  mine_open
-(const char *pathname, int flags, ...) {
-	mode_t s_mode;
-	va_list ap;
-	int ec;
-	va_start(ap, flags);
-	s_mode = va_arg(ap, mode_t);
-	va_end(ap);
-	debug__("(%s,%x,%x)", pathname, flags, s_mode);
-	return open(pathname, flags, s_mode);
+MINEAPI FILE * mine_fopen(char const * name, char const * mode) {
+	debug__("%s(%s, %s)", __FUNCTION__, name, mode);
+	return fopen(name, mode);
 }
