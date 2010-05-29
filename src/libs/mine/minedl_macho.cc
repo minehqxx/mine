@@ -295,10 +295,26 @@ int32_t minedl_macho_t::_create_lazy_bind(int32_t ths, int32_t idx,
 	/* get free executable space for __call_lazy_bind_t function */
 	__call_lazy_bind_t * ptr = _func_lazy_bind_mem.new_func();
 	/* initialise the lazybind function */
+	x86::push_register(ptr->push_esp, REG_SP);
+	x86::push_register(ptr->push_eax, REG_A);
+	x86::push_register(ptr->push_ecx, REG_C);
+	x86::push_register(ptr->push_edx, REG_D);
+	x86::push_register(ptr->push_ebx, REG_B);
+	x86::push_register(ptr->push_ebp, REG_BP);
+	x86::push_register(ptr->push_esi, REG_SI);
+	x86::push_register(ptr->push_edi, REG_DI);
 	x86::push(ptr->push_idx, idx);
 	x86::push(ptr->push_ths, ths);
 	x86::call(ptr->call_func, (int32_t) fnc - (int32_t) &(ptr->sub_esp));
 	x86::sub_esp(ptr->sub_esp, 8);
+	x86::pop_register(ptr->pop_edi, REG_DI);
+	x86::pop_register(ptr->pop_esi, REG_SI);
+	x86::pop_register(ptr->pop_ebp, REG_BP);
+	x86::pop_register(ptr->pop_ebx, REG_B);
+	x86::pop_register(ptr->pop_edx, REG_D);
+	x86::pop_register(ptr->pop_ecx, REG_C);
+	x86::pop_register(ptr->pop_eax, REG_A);
+	x86::pop_register(ptr->pop_esp, REG_SP);
 	x86::jump(ptr->jump_func, jmp - ((int32_t) &(ptr->jump_func)
 			+ sizeof(x86::jump_t)));
 	return (int32_t) ptr;

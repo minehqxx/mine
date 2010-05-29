@@ -39,10 +39,26 @@ class minedl_macho_t: public minedl_basic_t, public macho_reader_t {
 
 	/* template of lazy_bind_func */
 	struct __call_lazy_bind_t {
+		x86::push_register_t push_esp;
+		x86::push_register_t push_eax;
+		x86::push_register_t push_ecx;
+		x86::push_register_t push_edx;
+		x86::push_register_t push_ebx;
+		x86::push_register_t push_ebp;
+		x86::push_register_t push_esi;
+		x86::push_register_t push_edi;
 		x86::push_t push_idx;
 		x86::push_t push_ths;
 		x86::call_t call_func;
 		x86::sub_t sub_esp;
+		x86::pop_register_t pop_edi;
+		x86::pop_register_t pop_esi;
+		x86::pop_register_t pop_ebp;
+		x86::pop_register_t pop_ebx;
+		x86::pop_register_t pop_edx;
+		x86::pop_register_t pop_ecx;
+		x86::pop_register_t pop_eax;
+		x86::pop_register_t pop_esp;
 		x86::jump_t jump_func;
 	}__attribute__ ((__packed__));
 
