@@ -35,7 +35,7 @@ class minedl_macho_t: public minedl_basic_t, public macho_reader_t {
 
 	typedef void (*call_back_func)(int32_t, int32_t);
 	typedef void (*lazy_bind_func_t)(intptr_t, intptr_t);
-	typedef void (*trace_func_t)(intptr_t, intptr_t);
+	typedef void (*trace_func_t)(intptr_t, intptr_t, intptr_t, intptr_t, intptr_t, intptr_t, intptr_t, intptr_t, intptr_t, intptr_t);
 
 	/* template of lazy_bind_func */
 	struct __call_lazy_bind_t {
@@ -59,10 +59,28 @@ class minedl_macho_t: public minedl_basic_t, public macho_reader_t {
 	}__attribute__((__packed__));
 
 	struct __call_trace_t {
+		/* dump registers (paranoid mode on) */
+		x86::push_register_t push_esp;
+		x86::push_register_t push_eax;
+		x86::push_register_t push_ecx;
+		x86::push_register_t push_edx;
+		x86::push_register_t push_ebx;
+		x86::push_register_t push_ebp;
+		x86::push_register_t push_esi;
+		x86::push_register_t push_edi;
 		x86::push_t push_idx;
 		x86::push_t push_ths;
 		x86::call_t call_func;
 		x86::sub_t sub_esp;
+		/* restore register */
+		x86::pop_register_t pop_edi;
+		x86::pop_register_t pop_esi;
+		x86::pop_register_t pop_ebp;
+		x86::pop_register_t pop_ebx;
+		x86::pop_register_t pop_edx;
+		x86::pop_register_t pop_ecx;
+		x86::pop_register_t pop_eax;
+		x86::pop_register_t pop_esp;
 		x86::jump_t jump_func;
 	}__attribute__ ((__packed__));
 
@@ -118,7 +136,7 @@ class minedl_macho_t: public minedl_basic_t, public macho_reader_t {
 
 	static void _lazy_bind(intptr_t _ths, intptr_t _idx);
 	static void _test_fixme(intptr_t ths, intptr_t idx);
-	static void _trace_native(intptr_t _ths, intptr_t _idx);
+	static void _trace_native(intptr_t _ths, intptr_t _idx, intptr_t edi, intptr_t esi, intptr_t ebp, intptr_t ebx, intptr_t edx, intptr_t ecx, intptr_t eax, intptr_t esp);
 
 public:
 	/* static Library list */

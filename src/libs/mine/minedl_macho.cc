@@ -38,7 +38,7 @@ void minedl_macho_t::_test_fixme(int32_t ths, int32_t idx) {
 	debug__("Call undef symbol : %s", (char *)idx);
 }
 
-void minedl_macho_t::_trace_native(intptr_t _ths, intptr_t _idx) {
+void minedl_macho_t::_trace_native(intptr_t _ths, intptr_t _idx, intptr_t edi, intptr_t esi, intptr_t ebp, intptr_t ebx, intptr_t edx, intptr_t ecx, intptr_t eax, intptr_t esp) {
 	minedl_macho_t * ths = (minedl_macho_t *) _ths;
 	int32_t idx = _idx;
 	/* should it have only one item ? */
@@ -53,16 +53,34 @@ void minedl_macho_t::_trace_native(intptr_t _ths, intptr_t _idx) {
 	struct nlist * s_sym = nl + ps_indirectsym[i_tmp];
 	string str_symbol = str + s_sym->n_un.n_strx;
 	debug__("Trace call native [%s] of [%s]", str_symbol.c_str(), ths->_name.c_str());
+	debug__("Trace call native register eax:%08x ecx:%08x edx:%08x ebx:%08x", eax, ecx, edx, ebx);
+	debug__("Trace call native register esp:%08x ebp:%08x esi:%08x edi:%08x", esp, ebp, esi, edi);
 }
 
 int32_t minedl_macho_t::_create_trace(intptr_t ths, intptr_t idx,
 		trace_func_t fnc, int32_t jmp) {
 	/* get free space for trace function */
 	__call_trace_t * ptr = _func_trace_mem.new_func();
+	x86::push_register(ptr->push_esp, REG_SP);
+	x86::push_register(ptr->push_eax, REG_A);
+	x86::push_register(ptr->push_ecx, REG_C);
+	x86::push_register(ptr->push_edx, REG_D);
+	x86::push_register(ptr->push_ebx, REG_B);
+	x86::push_register(ptr->push_ebp, REG_BP);
+	x86::push_register(ptr->push_esi, REG_SI);
+	x86::push_register(ptr->push_edi, REG_DI);
 	x86::push(ptr->push_idx, (int32_t) idx);
 	x86::push(ptr->push_ths, ths);
 	x86::call(ptr->call_func, (int32_t) fnc - (int32_t) &(ptr->sub_esp));
 	x86::sub_esp(ptr->sub_esp, 8);
+	x86::pop_register(ptr->pop_edi, REG_DI);
+	x86::pop_register(ptr->pop_esi, REG_SI);
+	x86::pop_register(ptr->pop_ebp, REG_BP);
+	x86::pop_register(ptr->pop_ebx, REG_B);
+	x86::pop_register(ptr->pop_edx, REG_D);
+	x86::pop_register(ptr->pop_ecx, REG_C);
+	x86::pop_register(ptr->pop_eax, REG_A);
+	x86::pop_register(ptr->pop_esp, REG_SP);
 	x86::jump(ptr->jump_func, jmp - ((int32_t) &(ptr->jump_func)
 			+ sizeof(x86::jump_t)));
 	return (int32_t) ptr;
