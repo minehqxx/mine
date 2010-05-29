@@ -25,7 +25,15 @@
 #include <stdint.h>
 
 #define ModRM(mod, rm, reg) ((mod << 6) | (rm << 3) | (reg));
-#define ESP 4
+
+#define REG_A 0
+#define REG_C 1
+#define REG_D 2
+#define REG_B 3
+#define REG_SP 4
+#define REG_BP 5
+#define REG_SI 6
+#define REG_DI 7
 
 namespace x86 {
 
@@ -50,7 +58,11 @@ struct sub_t {
 	int32_t value; // 0x00000008;
 }__attribute__ ((__packed__));
 
-struct push_ebp_t {
+struct push_register_t {
+	char cmd;
+}__attribute__ ((__packed__));
+
+struct pop_register_t {
 	char cmd;
 }__attribute__ ((__packed__));
 
@@ -84,12 +96,16 @@ __inline__ void jump(jump_t & ths, int32_t addr) {
 
 __inline__ void sub_esp(sub_t & ths, int32_t addr) {
 	ths.cmd = 0x81;
-	ths.modrm = ModRM(3, 0, ESP);
+	ths.modrm = ModRM(3, 0, REG_SP);
 	ths.value = addr;
 }
 
-__inline__ void push_ebp(push_ebp_t & ths) {
-	ths.cmd = 0x55;
+__inline__ void push_register(push_register_t & ths, char reg) {
+	ths.cmd = 0x50 + reg;
+}
+
+__inline__ void pop_register(pop_register_t & ths, char reg) {
+	ths.cmd = 0x58 + reg;
 }
 
 __inline__ void mov_esp_to_ebp(mov_esp_to_ebp_t & ths) {

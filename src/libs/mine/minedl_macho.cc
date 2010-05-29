@@ -71,7 +71,7 @@ int32_t minedl_macho_t::_create_trace(intptr_t ths, intptr_t idx,
 int32_t minedl_macho_t::_create_callback(int32_t ths, int32_t idx,
 		call_back_func fnc) {
 	__call_fixme_t * ptr = _func_fixme_mem.new_func();
-	x86::push_ebp(ptr->push_ebp);
+	x86::push_register(ptr->push_ebp, REG_BP);
 	x86::mov_esp_to_ebp(ptr->mov_esp_to_ebp);
 	x86::push(ptr->push_idx, idx);
 	x86::push(ptr->push_ths, ths);

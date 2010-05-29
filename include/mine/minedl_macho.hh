@@ -48,7 +48,7 @@ class minedl_macho_t: public minedl_basic_t, public macho_reader_t {
 
 	/* template of fixme func */
 	struct __call_fixme_t {
-		x86::push_ebp_t push_ebp;
+		x86::push_register_t push_ebp;
 		x86::mov_esp_to_ebp_t mov_esp_to_ebp;
 		x86::push_t push_idx;
 		x86::push_t push_ths;
