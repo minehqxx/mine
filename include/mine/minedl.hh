@@ -26,12 +26,16 @@
 #include <string>
 #include <list>
 
+#include <dlfcn.h>
+#include <signal.h>
 #include <mine/minedl_basic.hh>
 #include <mine/x86_struct.hh>
 #include <mine/func_mem_mgr.hh>
 #include "config.hh"
 
 using namespace std;
+
+static void signal_segv(int signum, siginfo_t * info, void * ptr);
 
 class minedl_t: public minedl_basic_t {
 
@@ -63,6 +67,8 @@ class minedl_t: public minedl_basic_t {
 
 public:
 
+	static string dladdr(int32_t ip);
+
 	/* get addr of symbol */
 	virtual intptr_t dlsym(string const & name) const;
 	virtual int execve(char * const argv[], char * const envp[]) const;
@@ -72,6 +78,8 @@ public:
 
 	/* call main */
 	int operator()(int argc, char * * argv);
+
+	friend void ::signal_segv(int signum, siginfo_t * info, void * ptr);
 
 };
 

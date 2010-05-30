@@ -51,12 +51,17 @@ struct darwin_stat {
 	__int64_t st_qspare[2]; /* RESERVED: DO NOT USE! */
 };
 
-MINEAPI int mine_stat(const char *path, struct darwin_stat *buf) __MINE_INODE64(stat);
+MINEAPI int mine_stat(const char *path, struct darwin_stat *buf);
+MINEAPI int _stat$INODE64(const char *path, struct darwin_stat *buf);
+MINEAPI int _stat(const char *path, struct darwin_stat *buf);
+
 MINEAPI int mine_fstat(int fd, struct darwin_stat *buf);
 MINEAPI int _fstat$INODE64(int fd, struct darwin_stat *buf);
 MINEAPI int _fstat(int fd, struct darwin_stat *buf);
 
-MINEAPI int mine_lstat(const char *path, struct darwin_stat *buf)__MINE_INODE64(lstat);
+MINEAPI int mine_lstat(const char *path, struct darwin_stat *buf);
+MINEAPI int _lstat$INODE64(const char *path, struct darwin_stat *buf);
+MINEAPI int _lstat(const char *path, struct darwin_stat *buf);
 
 
 #endif /* SYSTEM_STAT_H_ */

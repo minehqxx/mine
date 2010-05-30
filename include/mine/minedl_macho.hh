@@ -31,6 +31,8 @@ using namespace std;
 #include <mine/x86_struct.hh>
 #include <mine/func_mem_mgr.hh>
 
+static void signal_segv(int signum, siginfo_t * info, void * ptr);
+
 class minedl_macho_t: public minedl_basic_t, public macho_reader_t {
 
 	typedef void (*call_back_func)(int32_t, int32_t);
@@ -177,6 +179,8 @@ public:
 	virtual int new_dylib_event(dylib_command const * dh);
 	virtual int new_entrypoint_event(uintptr_t in_i_addr);
 	virtual int end_of_file_event();
+
+	friend void ::signal_segv(int signum, siginfo_t * info, void * ptr);
 
 };
 

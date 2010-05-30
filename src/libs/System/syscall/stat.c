@@ -81,6 +81,10 @@ out_err:
 	return ec;
 }
 
+MINEAPI int _stat$INODE64(const char *path, struct darwin_stat *buf) __attribute__ ((weak, alias ("mine_stat")));
+MINEAPI int _stat(const char *path, struct darwin_stat *buf) __attribute__ ((weak, alias ("mine_stat")));
+
+
 MINEAPI int mine_fstat(int fd, struct darwin_stat *out_s_stat) {
 	debug__("fstat: %d %p", fd, out_s_stat);
 	struct stat s_tmp;
@@ -101,6 +105,8 @@ MINEAPI int mine_lstat(const char *path, struct darwin_stat *out_s_stat) {
 	struct stat s_tmp;
 	int ec;
 
+	/* gen segfault */
+	//*(int *)0 = 0;
 	ec = lstat(path, &s_tmp);
 	if(ec != 0) {
 		goto out_err;
@@ -111,5 +117,8 @@ MINEAPI int mine_lstat(const char *path, struct darwin_stat *out_s_stat) {
 out_err:
 	return ec;
 }
+
+MINEAPI int _lstat$INODE64(const char *path, struct darwin_stat *buf)  __attribute__ ((weak, alias ("mine_lstat")));
+MINEAPI int _lstat(const char *path, struct darwin_stat *buf)  __attribute__ ((weak, alias ("mine_lstat")));
 
 

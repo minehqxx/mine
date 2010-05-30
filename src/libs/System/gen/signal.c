@@ -30,7 +30,15 @@
  * Functions
  ***********************************************************************/
 
+static void foo(int i) {
+	crit___("Dummy segfault handler");
+}
+
 MINEAPI sig_t mine_signal(int signum, sig_t handler) {
 	debug__("(%d,%p)", signum, handler);
+	if (signum == SIGSEGV) {
+		debug__("WARNING TRY TO OVERIDE SEGFAULT HANDLER");
+		return foo;
+	}
 	return signal(signum, handler);
 }
