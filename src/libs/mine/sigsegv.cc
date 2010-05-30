@@ -36,13 +36,8 @@
 #include <dlfcn.h>
 #include <limits.h>
 
-#define sigsegv_outp(x, ...)    debug__(x, ##__VA_ARGS__)
-
-#define SIGSEGV_STACK_X86
-#define REGFORMAT "%08x"
-
 static void signal_segv(int signum, siginfo_t * info, void * ptr) {
-	static const char *si_codes[3] = { "", "SEGV_MAPERR", "SEGV_ACCERR" };
+	static char const * si_codes[3] = { "", "SEGV_MAPERR", "SEGV_ACCERR" };
 
 	int i, f = 0;
 	ucontext_t *ucontext = (ucontext_t*) ptr;
@@ -50,61 +45,57 @@ static void signal_segv(int signum, siginfo_t * info, void * ptr) {
 	int32_t bp = 0;
 	int32_t ip = 0;
 
-	sigsegv_outp("Segmentation Fault!");
-	sigsegv_outp("info.si_signo = %d", signum);
-	sigsegv_outp("info.si_errno = %d", info->si_errno);
-	sigsegv_outp("info.si_code  = %d (%s)", info->si_code, si_codes[info->si_code]);
-	sigsegv_outp("info.si_addr  = %p", info->si_addr);
+	debug__("Segmentation Fault");
+	debug__("info.si_signo = %d", signum);
+	debug__("info.si_errno = %d", info->si_errno);
+	debug__("info.si_code  = %d", info->si_code);
+	debug__("info.si_addr  = %p", info->si_addr);
+	if(info->si_errno)
+		debug__("%s", strerror(info->si_errno));
+
 	for (i = 0; i < NGREG; i++)
-		sigsegv_outp("reg[%02d]       = 0x" REGFORMAT, i, ucontext->uc_mcontext.gregs[i]);
+		debug__("reg[%02d]       = 0x%08x", i, ucontext->uc_mcontext.gregs[i]);
 
 	ip = ucontext->uc_mcontext.gregs[REG_EIP];
 	bp = ucontext->uc_mcontext.gregs[REG_EBP];
 
-	sigsegv_outp("Stack trace:");
+	debug__("Stack trace:");
 	const char *symname;
 	string s, n;
 	while (bp && ip) {
 		debug__("ip = %08x, bp = %08x", ip, bp);
-		if (!dladdr((void *)ip, &dlinfo)) {
-			//debug__("dladdr Fail ! : bp = %08x ip = %08x", bp, ip);
-
+		if (!dladdr((void *) ip, &dlinfo)) {
 			/* find in which lib we are, since we are not in dlopened
 			 * function we are in native lib */
-			map<string, minedl_t *>::iterator it(minedl_t::_already_loaded.begin());
-			int32_t nearest_pc_mem = INT_MIN;
+			map<string, minedl_t *>::const_iterator native_it(
+					minedl_t::_already_loaded.begin());
+			int32_t nearest_function_mem = INT_MIN;
 			/* the best candidate */
 			minedl_macho_t * nearest_macho;
-			while(it != minedl_t::_already_loaded.end()) {
-				minedl_macho_t * tmp = (minedl_macho_t *)it->second->_native_lib;
-				//debug__("Check %s @ %08x", it->first.c_str(), tmp->_pc_mem);
-				if(nearest_pc_mem < tmp->_pc_mem && tmp->_pc_mem < ip) {
-					//debug__("Match better %s @ %08x", it->first.c_str(), tmp->_pc_mem);
-					nearest_macho = tmp;
-					nearest_pc_mem = tmp->_pc_mem;
-					n = it->first;
+			/* For each native libs */
+			while (native_it != minedl_t::_already_loaded.end()) {
+				minedl_macho_t * tmp =
+						(minedl_macho_t *) native_it->second->_native_lib;
+				map<string, intptr_t>::const_iterator function_it =
+						tmp->_m_syms.begin();
+				while (function_it != tmp->_m_syms.end()) {
+					//debug__("Check better %s @ %08x", function_it->first.c_str(), function_it->second);
+					if (nearest_function_mem < function_it->second + tmp->_pc_mem
+							&& function_it->second + tmp->_pc_mem < ip) {
+						//sigsegv_outp("Match better %s @ %08x", function_it->first.c_str(), function_it->second);
+						nearest_function_mem = function_it->second;
+						s = function_it->first;
+					}
+					++function_it;
 				}
-				++it;
+				++native_it;
 			}
 
-			int32_t nearest_function_mem = INT_MIN;
-			if(nearest_pc_mem != INT_MIN) {
-				map<string, intptr_t>::const_iterator it = nearest_macho->_m_syms.begin();
-				while(it != nearest_macho->_m_syms.end()) {
-					//sigsegv_outp("%s @ %08x", it->first.c_str(), it->second);
-					if(nearest_function_mem < it->second + nearest_pc_mem && it->second + nearest_pc_mem < ip) {
-						sigsegv_outp("Match better %s @ %08x", it->first.c_str(), it->second);
-						nearest_function_mem = it->second;
-						s = it->first;
-					}
-					++it;
-				}
-			}
 			symname = s.c_str();
-			sigsegv_outp("TRACE >>>>>>>>>>>>>>>>>>>>>>>>> %s in %s", symname, n.c_str());
+			debug__("TRACE >>>>>>>>>>>>>>>>>>>>>>>>> %s in %s", symname, n.c_str());
 		} else {
 			symname = dlinfo.dli_sname;
-			sigsegv_outp("% 2d: %p <%s+%lu> (%s)",
+			debug__("% 2d: %p <%s+%lu> (%s)",
 					++f,
 					ip,
 					symname,
@@ -115,10 +106,10 @@ static void signal_segv(int signum, siginfo_t * info, void * ptr) {
 				break;
 		}
 
-		ip = ((int32_t*)bp)[1];
-		bp = ((int32_t*)bp)[0];
+		ip = ((int32_t*) bp)[1];
+		bp = ((int32_t*) bp)[0];
 	}
-	sigsegv_outp("End of stack trace.");
+	debug__("End of stack trace.");
 	_exit(-1);
 }
 

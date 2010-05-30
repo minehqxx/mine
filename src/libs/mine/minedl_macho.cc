@@ -246,6 +246,8 @@ int minedl_macho_t::update_link_tables(void) {
 
 			intptr_t i_addr = _create_lazy_bind((int32_t) this, i, _lazy_bind,
 					(int32_t) &(pc_tmp[i]));
+
+
 			/* Write x86 JMP */
 			x86::jump(pc_tmp[i], i_addr - ((int32_t) &pc_tmp[i + 1]));
 		}
@@ -354,13 +356,13 @@ void minedl_macho_t::_lazy_bind(intptr_t _ths, intptr_t _idx) {
 				crit___("Unable to resolve %s", str_symbol.c_str());
 				i_addr = ths->_create_callback((int32_t) ths, (int32_t) (str
 						+ s_sym->n_un.n_strx), _test_fixme);
-
 				exit(-1);
 			}
 		}
 
 		debug__("Lazy bind of %s@%08x", str_symbol.c_str(), i_addr);
 		i_addr = ths->_create_trace(_ths, _idx, _trace_native, i_addr);
+		ths->_m_syms[str_symbol + "____mine"] = i_addr;
 		/* Re-Write x86 JMP */
 		x86::jump(pc_tmp[i], i_addr - ((int32_t) &pc_tmp[i + 1]));
 	}
