@@ -1,1 +1,1 @@
-SUBDIRS = mine System
+SUBDIRS = mine System gcc_s

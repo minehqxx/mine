@@ -52,5 +52,5 @@ AC_MSG_RESULT(no)
 fi
 
 
-AC_CONFIG_FILES([Makefile src/Makefile src/loader/Makefile src/machoread/Makefile src/libs/Makefile src/libs/mine/Makefile src/libs/System/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile src/loader/Makefile src/machoread/Makefile src/libs/Makefile src/libs/mine/Makefile src/libs/System/Makefile src/libs/gcc_s/Makefile])
 AC_OUTPUT
