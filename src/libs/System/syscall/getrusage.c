@@ -1,5 +1,5 @@
 /*
- * Mine debug methods.
+ * Wrapper System library
  *
  * Copyright (C) 2010 <Johann Baudy> johann.baudy@gnu-log.net
  * Copyright (C) 2010 <Benoit Gschwind> gschwind@gnu-log.net
@@ -19,29 +19,19 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifndef SYSTEM_LOCALE_H_
-#define SYSTEM_LOCALE_H_
 /***********************************************************************
  * Includes
  ***********************************************************************/
 #include <mine/common.h>
-#include <mine/cdefs.h>
 
-#include <wchar.h>
-/***********************************************************************
- * Macros
- ***********************************************************************/
-/***********************************************************************
- * Variables
- ***********************************************************************/
-/***********************************************************************
- * Functions
- ***********************************************************************/
-MINEAPI char
-		* mine_setlocale(int category, const char *locale) __MINE_SYM(setlocale);
-MINEAPI int mine__tolower(int c) __MINE_SYM(__tolower);
-MINEAPI size_t mine_mbrtowc(wchar_t *restrict pwc, const char *restrict s,
-		size_t n, mbstate_t *restrict ps) __MINE_SYM(mbrtowc);
-MINEAPI int mine_mbtowc(wchar_t *pwc, const char *s, size_t n) __MINE_SYM(mbtowc);
 
-#endif /* SYSTEM_LOCALE_H_ */
+/* Glibc Linux headers */
+#include <sys/resource.h>
+
+#include <System/resource.h>
+
+
+MINEAPI int mine_getrusage(int who, struct rusage *usage) {
+	debug__("()");
+	return getrusage(who, usage);
+}

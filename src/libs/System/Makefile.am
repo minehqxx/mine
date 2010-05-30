@@ -33,10 +33,12 @@ libSystem_B_dylib_la_SOURCES += stdtime/strftime.c
 
 libSystem_B_dylib_la_SOURCES += locale/setlocale.c
 libSystem_B_dylib_la_SOURCES += locale/mbrtowc.c
+libSystem_B_dylib_la_SOURCES += locale/mbtowc.c
 libSystem_B_dylib_la_SOURCES += locale/tolower.c
 libSystem_B_dylib_la_SOURCES += locale/nl_langinfo.c
 libSystem_B_dylib_la_SOURCES += locale/wcwidth.c
 libSystem_B_dylib_la_SOURCES += locale/table.c
+libSystem_B_dylib_la_SOURCES += locale/wctomb.c
 
 libSystem_B_dylib_la_SOURCES += gen/isatty.c
 libSystem_B_dylib_la_SOURCES += gen/malloc.c
@@ -59,6 +61,7 @@ libSystem_B_dylib_la_SOURCES += sys/gettimeofday.c
 
 libSystem_B_dylib_la_SOURCES += string/memset.c
 libSystem_B_dylib_la_SOURCES += string/memcpy.c
+libSystem_B_dylib_la_SOURCES += string/memcmp.c
 libSystem_B_dylib_la_SOURCES += string/strlen.c
 libSystem_B_dylib_la_SOURCES += string/strcpy.c
 libSystem_B_dylib_la_SOURCES += string/strmode.c
@@ -85,6 +88,8 @@ libSystem_B_dylib_la_SOURCES += syscall/symlink.c
 libSystem_B_dylib_la_SOURCES += syscall/link.c
 libSystem_B_dylib_la_SOURCES += syscall/sync.c 
 libSystem_B_dylib_la_SOURCES += syscall/access.c 
+libSystem_B_dylib_la_SOURCES += syscall/getrusage.c 
+libSystem_B_dylib_la_SOURCES += syscall/sbrk.c 
 
 libSystem_B_dylib_la_SOURCES += clib/user_from_uid.c 
 

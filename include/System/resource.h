@@ -19,32 +19,16 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
-#ifndef SYSTEM_STDLIB_H_
-#define SYSTEM_STDLIB_H_
+#ifndef SYSTEM_RESOURCE_H_
+#define SYSTEM_RESOURCE_H_
 /***********************************************************************
  * Includes
  ***********************************************************************/
 #include <mine/common.h>
 #include <mine/cdefs.h>
-/***********************************************************************
- * Macros
- ***********************************************************************/
-/***********************************************************************
- * Variables
- ***********************************************************************/
-/***********************************************************************
- * Functions
- ***********************************************************************/
-MINEAPI void mine_exit(int status) __MINE_SYM(exit);
-MINEAPI char * mine_getenv(const char *name) __MINE_SYM(getenv);
+#include <sys/resource.h>
 
-MINEAPI void * mine_malloc(size_t size)__MINE_SYM(malloc);
-MINEAPI void mine_free(void * ptr)__MINE_SYM(free);
-MINEAPI void *mine_calloc(size_t nmemb, size_t size)__MINE_SYM(calloc);
-MINEAPI void *mine_realloc(void *ptr, size_t size)__MINE_SYM(realloc);
+MINEAPI int mine_getrusage(int who, struct rusage *usage) __MINE_SYM(getrusage);
 
-MINEAPI char * mine_getbsize(int * headerlenp, long *blocksizep)__MINE_SYM(getbsize);
 
-MINEAPI int	 mine_wctomb(char * s, wchar_t wc) __MINE_SYM(wctomb);
-#endif /* SYSTEM_STDLIB_H_ */
+#endif /* SYSTEM_STAT_H_ */

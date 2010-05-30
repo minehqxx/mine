@@ -80,6 +80,7 @@ MINEAPI void mine_sync(void) __MINE_SYM(sync);
 
 MINEAPI int	mine_access(const char *pathname, int mode) __MINE_SYM(access);
 
+MINEAPI void *mine_sbrk(int) __MINE_SYM(sbrk);
 
 MINEAPI int	mine_gethostname(char *, size_t) __MINE_SYM(gethostname);
 #endif /* SYSTEM_UNISTD_H_ */

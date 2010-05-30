@@ -48,7 +48,7 @@ MINEAPI char * mine_strchr(const char * p, int ch) __MINE_SYM(strchr);
 MINEAPI char * mine_strrchr(const char * p, int ch) __MINE_SYM(strrchr);
 MINEAPI char * mine_index(const char * p, int ch) __MINE_SYM(index);
 MINEAPI char * mine_rindex(const char * p, int ch) __MINE_SYM(rindex);
-
+MINEAPI int	 mine_memcmp(const void *s1, const void *s2, size_t len) __MINE_SYM(memcmp);
 
 #endif /* SYSTEM_STRING_H_ */
 

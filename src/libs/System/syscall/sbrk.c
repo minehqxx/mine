@@ -1,5 +1,5 @@
 /*
- * Mine debug methods.
+ * Wrapper System library
  *
  * Copyright (C) 2010 <Johann Baudy> johann.baudy@gnu-log.net
  * Copyright (C) 2010 <Benoit Gschwind> gschwind@gnu-log.net
@@ -19,32 +19,19 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
-#ifndef SYSTEM_STDLIB_H_
-#define SYSTEM_STDLIB_H_
 /***********************************************************************
  * Includes
  ***********************************************************************/
 #include <mine/common.h>
-#include <mine/cdefs.h>
-/***********************************************************************
- * Macros
- ***********************************************************************/
-/***********************************************************************
- * Variables
- ***********************************************************************/
+#include <System/unistd.h>
+
+/* Glibc Linux headers */
+#include <unistd.h>
 /***********************************************************************
  * Functions
  ***********************************************************************/
-MINEAPI void mine_exit(int status) __MINE_SYM(exit);
-MINEAPI char * mine_getenv(const char *name) __MINE_SYM(getenv);
 
-MINEAPI void * mine_malloc(size_t size)__MINE_SYM(malloc);
-MINEAPI void mine_free(void * ptr)__MINE_SYM(free);
-MINEAPI void *mine_calloc(size_t nmemb, size_t size)__MINE_SYM(calloc);
-MINEAPI void *mine_realloc(void *ptr, size_t size)__MINE_SYM(realloc);
-
-MINEAPI char * mine_getbsize(int * headerlenp, long *blocksizep)__MINE_SYM(getbsize);
-
-MINEAPI int	 mine_wctomb(char * s, wchar_t wc) __MINE_SYM(wctomb);
-#endif /* SYSTEM_STDLIB_H_ */
+MINEAPI void *mine_sbrk(int increment) {
+	debug__("(%d)", increment);
+	return sbrk(increment);
+}
