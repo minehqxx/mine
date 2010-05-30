@@ -67,4 +67,6 @@ MINEAPI int  mine_close(int) __MINE_UNIX2003(close);
 MINEAPI gid_t  mine_getgid(void) __MINE_SYM(getgid);
 MINEAPI gid_t  mine_getegid(void) __MINE_SYM(getegid);
 MINEAPI int mine_unlink(const char * path) __MINE_SYM(unlink);
+
+MINEAPI int	 mine_gethostname(char *, size_t) __MINE_SYM(gethostname);
 #endif /* SYSTEM_UNISTD_H_ */

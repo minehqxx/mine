@@ -47,6 +47,7 @@ libSystem_B_dylib_la_SOURCES += gen/getbsize.c
 libSystem_B_dylib_la_SOURCES += gen/time.c
 libSystem_B_dylib_la_SOURCES += gen/err.c
 libSystem_B_dylib_la_SOURCES += gen/get_compat.c
+libSystem_B_dylib_la_SOURCES += gen/gethostname.c
 
 libSystem_B_dylib_la_SOURCES += sys/ioctl.c
 libSystem_B_dylib_la_SOURCES += sys/geteuid.c
