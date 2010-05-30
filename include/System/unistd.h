@@ -43,8 +43,12 @@ extern int mine_optopt;
  * Functions
  ***********************************************************************/
 MINEAPI int mine_isatty(int fd) __MINE_SYM(isatty);
+
+/* UID */
 MINEAPI uid_t mine_geteuid(void) __MINE_SYM(geteuid);
 MINEAPI uid_t mine_getuid(void) __MINE_SYM(getuid);
+
+/* Getopt */
 MINEAPI int mine_getopt(int argc, char * const in_argv[], const char *optstring) __MINE_UNIX2003(getopt);
 
 
@@ -56,18 +60,23 @@ mine_fflagstostr(u_long flags)__MINE_SYM(fflagstostr);
 MINEAPI bool
 mine_compat_mode(const char *function, const char *mode)  __MINE_SYM(compat_mode);
 
-ssize_t  mine_readlink(const char * path, char * buf, size_t bufsiz) __MINE_SYM(readlink);
-
+/* File descriptor */
 MINEAPI int mine_write(int, void *, size_t) __MINE_UNIX2003(write);
 MINEAPI int mine_read(int, void *, size_t) __MINE_UNIX2003(read);
-MINEAPI int  mine_open
-(const char *pathname, int flags, ...) __MINE_UNIX2003(open);
+MINEAPI int  mine_open(const char *pathname, int flags, ...) __MINE_UNIX2003(open);
 MINEAPI int  mine_close(int) __MINE_UNIX2003(close);
 
+/* GID */
 MINEAPI gid_t  mine_getgid(void) __MINE_SYM(getgid);
 MINEAPI gid_t  mine_getegid(void) __MINE_SYM(getegid);
+
+/* Link */
 MINEAPI int mine_unlink(const char * path) __MINE_SYM(unlink);
 MINEAPI int mine_symlink(const char *oldpath, const char *newpath) __MINE_SYM(symlink);
 MINEAPI int	mine_link(const char *oldpath, const char *newpath) __MINE_SYM(link);
+MINEAPI ssize_t  mine_readlink(const char * path, char * buf, size_t bufsiz) __MINE_SYM(readlink);
+
+MINEAPI void mine_sync(void) __MINE_SYM(sync);
+
 MINEAPI int	mine_gethostname(char *, size_t) __MINE_SYM(gethostname);
 #endif /* SYSTEM_UNISTD_H_ */
