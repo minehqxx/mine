@@ -64,6 +64,9 @@ libSystem_B_dylib_la_SOURCES += string/strmode.c
 libSystem_B_dylib_la_SOURCES += string/strcoll.c
 libSystem_B_dylib_la_SOURCES += string/strcmp.c
 libSystem_B_dylib_la_SOURCES += string/strdup.c
+libSystem_B_dylib_la_SOURCES += string/strchr.c
+libSystem_B_dylib_la_SOURCES += string/rindex.c
+libSystem_B_dylib_la_SOURCES += string/index.c
 
 libSystem_B_dylib_la_SOURCES += posix1e/acl_file.c
 
@@ -76,6 +79,8 @@ libSystem_B_dylib_la_SOURCES += syscall/open.c
 libSystem_B_dylib_la_SOURCES += syscall/close.c
 libSystem_B_dylib_la_SOURCES += syscall/getgid.c 
 libSystem_B_dylib_la_SOURCES += syscall/uio.c 
+libSystem_B_dylib_la_SOURCES += syscall/symlink.c
+libSystem_B_dylib_la_SOURCES += syscall/link.c 
 
 libSystem_B_dylib_la_SOURCES += clib/user_from_uid.c 
 
