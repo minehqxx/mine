@@ -23,8 +23,9 @@
  * Includes
  ***********************************************************************/
 #include <mine/common.h>
+/* Darwin headers */
 #include <System/string.h>
-
+/* Glibc Linux headers */
 #include <string.h>
 /***********************************************************************
  * Functions

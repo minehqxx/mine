@@ -45,6 +45,7 @@ MINEAPI void * mine_memcpy(void * dest, void * src, size_t len) __MINE_SYM(memcp
 MINEAPI int mine_strcmp(const char *s1, const char *s2) __MINE_SYM(strcmp);
 MINEAPI char * mine_strdup(const char *s1) __MINE_SYM(strdup);
 MINEAPI char * mine_strchr(const char * p, int ch) __MINE_SYM(strchr);
+MINEAPI char * mine_strrchr(const char * p, int ch) __MINE_SYM(strrchr);
 MINEAPI char * mine_index(const char * p, int ch) __MINE_SYM(index);
 MINEAPI char * mine_rindex(const char * p, int ch) __MINE_SYM(rindex);
 

@@ -78,5 +78,8 @@ MINEAPI ssize_t  mine_readlink(const char * path, char * buf, size_t bufsiz) __M
 
 MINEAPI void mine_sync(void) __MINE_SYM(sync);
 
+MINEAPI int	mine_access(const char *pathname, int mode) __MINE_SYM(access);
+
+
 MINEAPI int	mine_gethostname(char *, size_t) __MINE_SYM(gethostname);
 #endif /* SYSTEM_UNISTD_H_ */

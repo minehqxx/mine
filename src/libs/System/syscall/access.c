@@ -23,14 +23,15 @@
  * Includes
  ***********************************************************************/
 #include <mine/common.h>
+#include <System/unistd.h>
 
 /* Glibc Linux headers */
 #include <unistd.h>
 
-/* Darwin headers */
-#include <System/unistd.h>
-
-MINEAPI void mine_sync(void) {
-	debug__("()");
-	sync();
+/***********************************************************************
+ * Functions
+ ***********************************************************************/
+MINEAPI int	mine_access(const char *pathname, int mode) {
+	debug__("(%s,%x)", pathname, mode);
+	return access(pathname, mode);
 }

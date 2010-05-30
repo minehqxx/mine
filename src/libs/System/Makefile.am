@@ -65,6 +65,7 @@ libSystem_B_dylib_la_SOURCES += string/strcoll.c
 libSystem_B_dylib_la_SOURCES += string/strcmp.c
 libSystem_B_dylib_la_SOURCES += string/strdup.c
 libSystem_B_dylib_la_SOURCES += string/strchr.c
+libSystem_B_dylib_la_SOURCES += string/strrchr.c
 libSystem_B_dylib_la_SOURCES += string/rindex.c
 libSystem_B_dylib_la_SOURCES += string/index.c
 
@@ -82,6 +83,7 @@ libSystem_B_dylib_la_SOURCES += syscall/uio.c
 libSystem_B_dylib_la_SOURCES += syscall/symlink.c
 libSystem_B_dylib_la_SOURCES += syscall/link.c
 libSystem_B_dylib_la_SOURCES += syscall/sync.c 
+libSystem_B_dylib_la_SOURCES += syscall/access.c 
 
 libSystem_B_dylib_la_SOURCES += clib/user_from_uid.c 
 
