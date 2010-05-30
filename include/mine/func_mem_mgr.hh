@@ -23,12 +23,13 @@
 
 #include <list>
 #include <cstdint>
+#include <cstdlib>
 #include <sys/mman.h>
 #include <mine/log.hh>
 
 using namespace std;
 
-template<typename T, unsigned int BLOCK_SIZE = 0x16000>
+template<typename T, unsigned int BLOCK_SIZE = 0x4000>
 class func_mem_mgr_t {
 	intptr_t _pc_func_mem_end;
 	intptr_t _pc_next_func_mem;
@@ -40,7 +41,7 @@ class func_mem_mgr_t {
 public:
 	func_mem_mgr_t() :
 		_pc_func_mem_end(0), _pc_next_func_mem(0), _align_sizeof_func(
-				((sizeof(T) / 4) * 4) + 4), _lst_func_mem() {
+				((sizeof(T) >> 2) << 2) + 4), _lst_func_mem() {
 	}
 
 	~func_mem_mgr_t() {
@@ -59,10 +60,13 @@ public:
 			if (_pc_next_func_mem == -1) {
 				fatal__("Cannot map %d o", BLOCK_SIZE);
 				exit(1);
-			}
+			} //else {
+				//debug__("Allocate %x@%08x", BLOCK_SIZE, _pc_next_func_mem);
+			//}
 			_lst_func_mem.push_back(_pc_next_func_mem);
-			_pc_func_mem_end = _pc_next_func_mem + BLOCK_SIZE;
+			_pc_func_mem_end = _pc_next_func_mem + BLOCK_SIZE - _align_sizeof_func;
 		}
+		//debug__("Return %x@%08x", _align_sizeof_func, _pc_next_func_mem);
 		return (T *)_pc_next_func_mem;
 	}
 };
