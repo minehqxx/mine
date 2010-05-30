@@ -55,6 +55,7 @@ libSystem_B_dylib_la_SOURCES += sys/getuid.c
 libSystem_B_dylib_la_SOURCES += sys/errno.c
 libSystem_B_dylib_la_SOURCES += sys/setjmp.c
 libSystem_B_dylib_la_SOURCES += sys/unlink.c
+libSystem_B_dylib_la_SOURCES += sys/gettimeofday.c
 
 libSystem_B_dylib_la_SOURCES += string/memset.c
 libSystem_B_dylib_la_SOURCES += string/memcpy.c

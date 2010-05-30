@@ -1,5 +1,5 @@
 /*
- * Mine debug methods.
+ * Wrapper System library
  *
  * Copyright (C) 2010 <Johann Baudy> johann.baudy@gnu-log.net
  * Copyright (C) 2010 <Benoit Gschwind> gschwind@gnu-log.net
@@ -19,28 +19,21 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifndef SYSTEM_TIME_H_
-#define SYSTEM_TIME_H_
 /***********************************************************************
  * Includes
  ***********************************************************************/
 #include <mine/common.h>
-#include <mine/cdefs.h>
+#include <System/time.h>
+extern int gettimeofday(struct timeval *tv, void *tz);
 
-#include <time.h>
-/***********************************************************************
- * Macros
- ***********************************************************************/
-/***********************************************************************
- * Variables
- ***********************************************************************/
+
 /***********************************************************************
  * Functions
  ***********************************************************************/
-MINEAPI time_t mine_time(time_t *t) __MINE_SYM(time);
-MINEAPI struct tm *mine_localtime(const time_t *timep) __MINE_SYM(localtime);
-MINEAPI size_t mine_strftime(char *s, size_t max, const char *format,
-		const struct tm *tm) __MINE_UNIX2003(strftime);
-MINEAPI int mine_gettimeofday (struct timeval *tp, void *vtzp) __MINE_SYM(gettimeofday);
-#endif /* SYSTEM_TIME_H_ */
 
+
+MINEAPI int mine_gettimeofday (struct timeval *tp, void *vtzp) {
+	debug__("()");
+	struct timezone *tzp = (struct timezone *)vtzp;
+	return gettimeofday(tp, tzp);
+}
