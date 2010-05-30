@@ -50,7 +50,7 @@ static void signal_segv(int signum, siginfo_t * info, void * ptr) {
 	debug__("info.si_errno = %d", info->si_errno);
 	debug__("info.si_code  = %d", info->si_code);
 	debug__("info.si_addr  = %p", info->si_addr);
-	if(info->si_errno)
+	if (info->si_errno)
 		debug__("%s", strerror(info->si_errno));
 
 	for (i = 0; i < NGREG; i++)
@@ -76,23 +76,25 @@ static void signal_segv(int signum, siginfo_t * info, void * ptr) {
 			while (native_it != minedl_t::_already_loaded.end()) {
 				minedl_macho_t * tmp =
 						(minedl_macho_t *) native_it->second->_native_lib;
-				map<string, intptr_t>::const_iterator function_it =
-						tmp->_m_syms.begin();
-				while (function_it != tmp->_m_syms.end()) {
-					//debug__("Check better %s @ %08x", function_it->first.c_str(), function_it->second);
-					if (nearest_function_mem < function_it->second + tmp->_pc_mem
-							&& function_it->second + tmp->_pc_mem < ip) {
-						//sigsegv_outp("Match better %s @ %08x", function_it->first.c_str(), function_it->second);
-						nearest_function_mem = function_it->second;
-						s = function_it->first;
+				if (tmp) {
+					map<string, intptr_t>::const_iterator function_it =
+							tmp->_m_syms.begin();
+					while (function_it != tmp->_m_syms.end()) {
+						//debug__("Check better %s @ %08x", function_it->first.c_str(), function_it->second);
+						if (nearest_function_mem < function_it->second
+								+ tmp->_pc_mem && function_it->second
+								+ tmp->_pc_mem < ip) {
+							//sigsegv_outp("Match better %s @ %08x", function_it->first.c_str(), function_it->second);
+							nearest_function_mem = function_it->second;
+							s = function_it->first;
+						}
+						++function_it;
 					}
-					++function_it;
 				}
 				++native_it;
 			}
 
-			symname = s.c_str();
-			debug__("TRACE >>>>>>>>>>>>>>>>>>>>>>>>> %s in %s", symname, n.c_str());
+			debug__("TRACE >>>>>>>>>>>>>>>>>>>>>>>>> %s", s.c_str());
 		} else {
 			symname = dlinfo.dli_sname;
 			debug__("% 2d: %p <%s+%lu> (%s)",
