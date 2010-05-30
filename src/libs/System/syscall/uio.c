@@ -1,5 +1,5 @@
 /*
- * Mine debug methods.
+ * Wrapper System library
  *
  * Copyright (C) 2010 <Johann Baudy> johann.baudy@gnu-log.net
  * Copyright (C) 2010 <Benoit Gschwind> gschwind@gnu-log.net
@@ -19,27 +19,19 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
-#ifndef MINE_CDEFS_H_
-#define MINE_CDEFS_H_
-
 /***********************************************************************
  * Includes
  ***********************************************************************/
+#include <mine/common.h>
+#include <System/uio.h>
+
+/* Glibc Linux headers */
+#include <sys/uio.h>
+
 /***********************************************************************
- * Macros
+ * Functions
  ***********************************************************************/
-#define	__MINE_STRING(x)	#x
-
-#define __MINE_SUF_INODE64		"$INODE64"
-#define __MINE_SUF_UNIX2003     "$UNIX2003"
-#define __MINE_SUF_NON_CANCELABLE ""
-
-#define __MINE_ALIAS_C(sym)		__asm("_" __MINE_STRING(sym) __MINE_SUF_NON_CANCELABLE __MINE_SUF_UNIX2003)
-#define __MINE_INODE64(sym)		__asm("_" __MINE_STRING(sym) __MINE_SUF_INODE64)
-#define __MINE_UNIX2003(sym)    __asm("_" __MINE_STRING(sym) __MINE_SUF_UNIX2003)
-#define __MINE_SYM(sym)		    __asm("_" __MINE_STRING(sym) )
-
-#define MINEAPI //__attribute__((__stdcall__))
-
-#endif /* CDEFS_H_ */
+MINEAPI ssize_t	mine_writev(int fd, const struct darwin_iovec * iov, int iovcnt) {
+	debug__("(%d,%p,%d)", fd, iov, iovcnt);
+	return writev(fd, (struct iovec *) iov, iovcnt);
+}

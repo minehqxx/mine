@@ -74,6 +74,7 @@ libSystem_B_dylib_la_SOURCES += syscall/write.c
 libSystem_B_dylib_la_SOURCES += syscall/open.c
 libSystem_B_dylib_la_SOURCES += syscall/close.c
 libSystem_B_dylib_la_SOURCES += syscall/getgid.c 
+libSystem_B_dylib_la_SOURCES += syscall/uio.c 
 
 libSystem_B_dylib_la_SOURCES += clib/user_from_uid.c 
 

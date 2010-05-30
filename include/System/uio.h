@@ -1,5 +1,5 @@
 /*
- * Mine debug methods.
+ * Mine system methods.
  *
  * Copyright (C) 2010 <Johann Baudy> johann.baudy@gnu-log.net
  * Copyright (C) 2010 <Benoit Gschwind> gschwind@gnu-log.net
@@ -20,26 +20,32 @@
  */
 
 
-#ifndef MINE_CDEFS_H_
-#define MINE_CDEFS_H_
-
+#ifndef UIO_H_
+#define UIO_H_
 /***********************************************************************
  * Includes
  ***********************************************************************/
+#include <mine/common.h>
+#include <mine/cdefs.h>
 /***********************************************************************
  * Macros
  ***********************************************************************/
-#define	__MINE_STRING(x)	#x
+/***********************************************************************
+ * Variables
+ ***********************************************************************/
+/***********************************************************************
+ * Types
+ ***********************************************************************/
 
-#define __MINE_SUF_INODE64		"$INODE64"
-#define __MINE_SUF_UNIX2003     "$UNIX2003"
-#define __MINE_SUF_NON_CANCELABLE ""
+struct darwin_iovec {
+	void *   iov_base;	/* [XSI] Base address of I/O memory region */
+	size_t	 iov_len;	/* [XSI] Size of region iov_base points to */
+};
 
-#define __MINE_ALIAS_C(sym)		__asm("_" __MINE_STRING(sym) __MINE_SUF_NON_CANCELABLE __MINE_SUF_UNIX2003)
-#define __MINE_INODE64(sym)		__asm("_" __MINE_STRING(sym) __MINE_SUF_INODE64)
-#define __MINE_UNIX2003(sym)    __asm("_" __MINE_STRING(sym) __MINE_SUF_UNIX2003)
-#define __MINE_SYM(sym)		    __asm("_" __MINE_STRING(sym) )
+/***********************************************************************
+ * Functions
+ ***********************************************************************/
 
-#define MINEAPI //__attribute__((__stdcall__))
+MINEAPI ssize_t	mine_writev(int, const struct darwin_iovec *, int) __MINE_ALIAS_C(writev);
 
-#endif /* CDEFS_H_ */
+#endif /* UIO_H_ */
