@@ -29,7 +29,12 @@
 
 typedef __int32_t	__darwin_dev_t;
 typedef __uint64_t	__darwin_ino64_t;
+typedef __uint32_t	__darwin_ino32_t;
+#ifdef __DARWIN_64_BIT_INO_T
 typedef __darwin_ino64_t __darwin_ino_t;
+#else
+typedef __darwin_ino32_t __darwin_ino_t;
+#endif
 typedef __uint16_t	__darwin_mode_t;
 typedef __uint32_t	__darwin_uid_t;
 typedef __uint32_t	__darwin_gid_t;

@@ -44,27 +44,11 @@
 /***********************************************************************
  * Functions
  ***********************************************************************/
-//???
 
+/* Wrapper init function */
 void __mine_init(void) {
 	mine_init_findfp();
 }
-
-#if 0
-http://developer.apple.com/mac/library/documentation/DeveloperTools/gcc-4.0.1/gccint/Integer-library-routines.html
-#endif
-//TODO move to gcc_s
-#if 0
-long ___udivdi3(long a, long b){
-	printf("(%d,%d)\n",(int) a,(int) b);
-	if(b) {
-	return a/b;
-	} else {
-		return 0;
-	}
-	//return _ulldiv (a, b).quot;
-}
-#endif
 
 /* Dont know where to put those below functions */
 ssize_t

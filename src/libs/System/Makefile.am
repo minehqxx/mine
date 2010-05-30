@@ -67,6 +67,7 @@ libSystem_B_dylib_la_SOURCES += string/strdup.c
 libSystem_B_dylib_la_SOURCES += posix1e/acl_file.c
 
 libSystem_B_dylib_la_SOURCES += syscall/stat.c
+libSystem_B_dylib_la_SOURCES += syscall/stat64.c
 libSystem_B_dylib_la_SOURCES += syscall/readlink.c
 libSystem_B_dylib_la_SOURCES += syscall/read.c
 libSystem_B_dylib_la_SOURCES += syscall/write.c

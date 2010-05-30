@@ -20,13 +20,17 @@
  */
 
 /***********************************************************************
+ * Defines
+ ***********************************************************************/
+
+#define __USE_FILE_OFFSET64
+#define __DARWIN_UNIX03
+#define __DARWIN_64_BIT_INO_T
+
+/***********************************************************************
  * Includes
  ***********************************************************************/
 #include <mine/common.h>
-
-#undef __USE_FILE_OFFSET64
-#define __DARWIN_UNIX03 1
-#undef __DARWIN_64_BIT_INO_T
 
 /* Glibc Linux headers */
 #include <sys/types.h>
@@ -37,7 +41,7 @@
 /* Darwin headers */
 #include <System/stat.h>
 
-static void mine_stat_l2d(struct darwin_stat *out_s_stat, struct stat *in_s_stat ) {
+static void mine_stat_l2d(struct darwin_stat64 *out_s_stat, struct stat *in_s_stat ) {
 	out_s_stat->st_dev = in_s_stat->st_dev;
 	out_s_stat->st_mode = in_s_stat->st_mode; /* [XSI] Mode of file (see below) */
 	out_s_stat->st_nlink = in_s_stat->st_nlink; /* [XSI] Number of hard links */
@@ -52,6 +56,10 @@ static void mine_stat_l2d(struct darwin_stat *out_s_stat, struct stat *in_s_stat
 	out_s_stat->st_mtimespec.tv_nsec = in_s_stat->st_mtim.tv_nsec;
 	out_s_stat->st_ctimespec.tv_sec = in_s_stat->st_ctim.tv_sec;		/* time of last status change */
 	out_s_stat->st_ctimespec.tv_nsec = in_s_stat->st_ctim.tv_nsec;
+
+	out_s_stat->st_birthtimespec.tv_sec = in_s_stat->st_ctim.tv_sec;	/* time of file creation(birth) using ctime ... */
+	out_s_stat->st_birthtimespec.tv_nsec = in_s_stat->st_ctim.tv_nsec;
+
 	out_s_stat->st_size = in_s_stat->st_size; /* [XSI] file size, in bytes */
 	out_s_stat->st_blocks = in_s_stat->st_blocks; /* [XSI] blocks allocated for file */
 	out_s_stat->st_blksize = in_s_stat->st_blksize; /* [XSI] optimal blocksize for I/O */
@@ -64,7 +72,7 @@ static void mine_stat_l2d(struct darwin_stat *out_s_stat, struct stat *in_s_stat
 	//printf("%d %d\n", (int)out_s_stat->st_blocks, (int)out_s_stat->st_blksize);
 }
 
-MINEAPI int mine_stat(const char *path, struct darwin_stat *out_s_stat) {
+MINEAPI int mine_stat64(const char *path, struct darwin_stat64 *out_s_stat) {
 	struct stat s_tmp;
 	int ec;
 
@@ -79,7 +87,7 @@ out_err:
 	return ec;
 }
 
-MINEAPI int mine_fstat(int fd, struct darwin_stat *out_s_stat) {
+MINEAPI int mine_fstat64(int fd, struct darwin_stat64 *out_s_stat) {
 	debug__("fstat: %d %p", fd, out_s_stat);
 	struct stat s_tmp;
 	int ec;
@@ -92,7 +100,7 @@ out_err:
 	return ec;
 }
 
-MINEAPI int mine_lstat(const char *path, struct darwin_stat *out_s_stat) {
+MINEAPI int mine_lstat64(const char *path, struct darwin_stat64 *out_s_stat) {
 	struct stat s_tmp;
 	int ec;
 
@@ -109,3 +117,9 @@ out_err:
 	return ec;
 }
 
+/* Make alias of stat : _stats$INODE64 -> _stat64 */
+MINEAPI int mine_stat(const char *path, struct darwin_stat *buf) __attribute__ ((weak, alias ("_stat64")));
+/* Make alias of lstat : _lstats$INODE64 -> _lstat64 */
+MINEAPI int mine_lstat(const char *path, struct darwin_stat *buf) __attribute__ ((weak, alias ("_lstat64")));
+/* Make alias of fstat : _fstats$INODE64 -> _fstat64 */
+MINEAPI int mine_fstat(int fd, struct darwin_stat *out_s_stat) __attribute__ ((weak, alias ("_fstat64")));

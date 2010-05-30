@@ -30,7 +30,50 @@
 #include <System/types.h>
 #include <time.h>
 
+
 struct darwin_stat {
+#ifndef __DARWIN_64_BIT_INO_T
+	__darwin_dev_t st_dev; /* [XSI] ID of device containing file */
+	__darwin_ino32_t st_ino; /* [XSI] File serial number */
+	__darwin_mode_t st_mode; /* [XSI] Mode of file (see below) */
+	__uint16_t st_nlink; /* [XSI] Number of hard links */
+	__darwin_uid_t st_uid; /* [XSI] User ID of the file */
+	__darwin_gid_t st_gid; /* [XSI] Group ID of the file */
+	__darwin_dev_t st_rdev; /* [XSI] Device ID */
+	struct timespec st_atimespec;		/* time of last access */
+	struct timespec st_mtimespec;		/* time of last data modification */
+	struct timespec st_ctimespec;		/* time of last status change */
+	__darwin_off_t st_size; /* [XSI] file size, in bytes */
+	__darwin_blkcnt_t st_blocks; /* [XSI] blocks allocated for file */
+	__darwin_blksize_t st_blksize; /* [XSI] optimal blocksize for I/O */
+	__uint32_t st_flags; /* user defined flags for file */
+	__uint32_t st_gen; /* file generation number */
+	__int32_t st_lspare; /* RESERVED: DO NOT USE! */
+	__int64_t st_qspare[2]; /* RESERVED: DO NOT USE! */
+#else
+	__darwin_dev_t st_dev; /* [XSI] ID of device containing file */
+	__darwin_mode_t st_mode; /* [XSI] Mode of file (see below) */
+	__uint16_t st_nlink; /* [XSI] Number of hard links */
+	__darwin_ino64_t st_ino; /* [XSI] File serial number */
+	__darwin_uid_t st_uid; /* [XSI] User ID of the file */
+	__darwin_gid_t st_gid; /* [XSI] Group ID of the file */
+	__darwin_dev_t st_rdev; /* [XSI] Device ID */
+	struct timespec st_atimespec;		/* time of last access */
+	struct timespec st_mtimespec;		/* time of last data modification */
+	struct timespec st_ctimespec;		/* time of last status change */
+	struct timespec st_birthtimespec;	/* time of file creation(birth) */
+	__darwin_off_t st_size; /* [XSI] file size, in bytes */
+	__darwin_blkcnt_t st_blocks; /* [XSI] blocks allocated for file */
+	__darwin_blksize_t st_blksize; /* [XSI] optimal blocksize for I/O */
+	__uint32_t st_flags; /* user defined flags for file */
+	__uint32_t st_gen; /* file generation number */
+	__int32_t st_lspare; /* RESERVED: DO NOT USE! */
+	__int64_t st_qspare[2]; /* RESERVED: DO NOT USE! */
+#endif
+};
+
+
+struct darwin_stat64 {
 	__darwin_dev_t st_dev; /* [XSI] ID of device containing file */
 	__darwin_mode_t st_mode; /* [XSI] Mode of file (see below) */
 	__uint16_t st_nlink; /* [XSI] Number of hard links */
@@ -51,17 +94,19 @@ struct darwin_stat {
 	__int64_t st_qspare[2]; /* RESERVED: DO NOT USE! */
 };
 
-MINEAPI int mine_stat(const char *path, struct darwin_stat *buf);
-MINEAPI int _stat$INODE64(const char *path, struct darwin_stat *buf);
-MINEAPI int _stat(const char *path, struct darwin_stat *buf);
 
-MINEAPI int mine_fstat(int fd, struct darwin_stat *buf);
-MINEAPI int _fstat$INODE64(int fd, struct darwin_stat *buf);
-MINEAPI int _fstat(int fd, struct darwin_stat *buf);
+#ifndef __DARWIN_64_BIT_INO_T
+MINEAPI int mine_stat(const char *path, struct darwin_stat *buf) __MINE_SYM(stat);
+MINEAPI int mine_fstat(int fd, struct darwin_stat *buf) __MINE_SYM(fstat);
+MINEAPI int mine_lstat(const char *path, struct darwin_stat *buf) __MINE_SYM(lstat);
+#else
+MINEAPI int mine_stat(const char *path, struct darwin_stat *buf) __MINE_INODE64(stat);
+MINEAPI int mine_fstat(int fd, struct darwin_stat *buf) __MINE_INODE64(fstat);
+MINEAPI int mine_lstat(const char *path, struct darwin_stat *buf) __MINE_INODE64(lstat);
+#endif
 
-MINEAPI int mine_lstat(const char *path, struct darwin_stat *buf);
-MINEAPI int _lstat$INODE64(const char *path, struct darwin_stat *buf);
-MINEAPI int _lstat(const char *path, struct darwin_stat *buf);
-
+MINEAPI int mine_stat64(const char *path, struct darwin_stat64 *buf) __MINE_SYM(stat64);
+MINEAPI int mine_fstat64(int fd, struct darwin_stat64 *buf) __MINE_SYM(fstat64);
+MINEAPI int mine_lstat64(const char *path, struct darwin_stat64 *buf) __MINE_SYM(lstat64);
 
 #endif /* SYSTEM_STAT_H_ */
